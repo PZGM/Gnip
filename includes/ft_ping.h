@@ -22,7 +22,7 @@
 unsigned short checksum(void *b, int len);
 void send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time);
 void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char *host, char *ip_str);
-char *get_addr( const char *host, struct addrinfo* res);
+char *get_addr( const char *host, struct addrinfo** res);
 int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
 void print_stats(char * host);
 

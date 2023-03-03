@@ -21,4 +21,6 @@ void send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeva
 		perror("Failed to send ICMP echo request");
 		exit (1);
 	}
+
+	return;
 }

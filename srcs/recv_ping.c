@@ -2,13 +2,14 @@
 
 void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
 	char recv_buf[MAX_PACKET_SIZE];
+
 	struct iovec iov = {
 		.iov_base = recv_buf,
 		.iov_len = sizeof(recv_buf)
 	};
 	struct msghdr msg = {
-		.msg_name = &src_addr,
-		.msg_namelen = sizeof(&src_addr),
+		.msg_name = src_addr,
+		.msg_namelen = sizeof(src_addr),
 		.msg_iov = &iov,
 		.msg_iovlen = 1
 	};
@@ -27,6 +28,6 @@ void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval 
 			exit(1);
 		}
 		double ping = (end_time.tv_sec - start_time->tv_sec) * 1000.0 + (end_time.tv_usec - start_time->tv_usec) / 1000.0;
-		printf("%zu bytes from %s (%s): icmp_seq=%d ttl=%d time=%.3f ms\n", iov.iov_len, host, ip_str, seq, 64, ping);
+		printf("%zu bytes from %s (%s): icmp_seq=%d ttl=%d time=%.3f ms\n", iov.iov_len, host, ip_str, seq, 69, ping);
 	}
 }
