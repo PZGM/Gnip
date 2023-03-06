@@ -19,6 +19,8 @@ SRCS =	./srcs/ft_ping.c		\
 		./srcs/socket_fd.c		\
 		./srcs/checksum.c		\
 		./srcs/print_stats.c	\
+		./srcs/update_stats.c	\
+		./srcs/free_chain.c
 
 		
 OBJS = ${SRCS:.c=.o}

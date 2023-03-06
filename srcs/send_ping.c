@@ -1,6 +1,6 @@
 #include "ft_ping.h"
 
-void send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time) {
+int send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time) {
 	
 	char send_buf[PACKET_SIZE];
 
@@ -18,7 +18,7 @@ void send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeva
 		exit (1);
 	}
 
-	return;
+	return 1;
 }
 
 static inline void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest)

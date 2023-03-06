@@ -1,6 +1,6 @@
 #include "ft_ping.h"
 
-void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
+int recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
 	char recv_buf[PACKET_SIZE];
 
 	struct iovec iov = {
@@ -21,6 +21,7 @@ void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval 
 			perror("Failed to receive ICMP echo reply");
 			exit(1);
 		}
+		return -1;
 	} else {
 		struct timeval end_time;
 		struct iphdr	*ip = (struct iphdr *)recv_buf;
@@ -30,5 +31,6 @@ void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval 
 		}
 		double ping = (end_time.tv_sec - start_time->tv_sec) * 1000.0 + (end_time.tv_usec - start_time->tv_usec) / 1000.0;
 		printf("%zu bytes from %s (%s): icmp_seq=%d ttl=%d time=%.3f ms\n", iov.iov_len, host, ip_str, seq, ip->ttl, ping);
+		return ping;
 	}
 }
