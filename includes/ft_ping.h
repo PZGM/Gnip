@@ -29,7 +29,7 @@ char *get_addr( const char *host, struct addrinfo** res);
 int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
 void print_stats(char * host);
 
-static inline void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
-static inline void	fill_icmp_header(struct icmphdr* icmp, int seq);
+void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
+void	fill_icmp_header(struct icmphdr* icmp, int seq);
 
 #endif
