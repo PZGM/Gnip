@@ -16,8 +16,9 @@ SRCS =	./srcs/ft_ping.c		\
 		./srcs/send_ping.c		\
 		./srcs/recv_ping.c		\
 		./srcs/get_addr.c		\
-		./srcs/socket_fd.c			\
+		./srcs/socket_fd.c		\
 		./srcs/checksum.c		\
+		./srcs/print_stats.c	\
 
 		
 OBJS = ${SRCS:.c=.o}
@@ -26,7 +27,7 @@ CC  = clang
 
 CFLAGS = -Wall -Wextra -Werror -I includes/
 
-SANI = -fsanitize=address -O0 -g3 --std=c98
+SANI = -fsanitize=address -O0 -g3
 
 $(NAME): ${OBJS} Makefile
 	@echo "\r\r${YELLOW}Compilation...${RESET}"
