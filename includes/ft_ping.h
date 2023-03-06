@@ -16,8 +16,11 @@
 #include <signal.h>
 #include <stdbool.h>
 
-#define MAX_PACKET_SIZE 64
-#define ICMP_HEADER_SIZE 8
+# define ICMP_HEADER_SIZE       8
+# define TTL                    64
+# define IP_HEADER_SIZE			20
+# define ICMP_PAYLOAD_SIZE		36
+# define PACKET_SIZE	        (IP_HEADER_SIZE + ICMP_HEADER_SIZE + ICMP_PAYLOAD_SIZE)
 
 unsigned short checksum(void *b, int len);
 void send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time);
@@ -25,5 +28,8 @@ void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval 
 char *get_addr( const char *host, struct addrinfo** res);
 int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
 void print_stats(char * host);
+
+static inline void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
+static inline void	fill_icmp_header(struct icmphdr* icmp, int seq);
 
 #endif

@@ -25,7 +25,7 @@ OBJS = ${SRCS:.c=.o}
 
 CC  = clang
 
-CFLAGS = -Wall -Wextra -Werror -I includes/
+CFLAGS = -Wall -Wextra  -I includes/
 
 SANI = -fsanitize=address -O0 -g3
 

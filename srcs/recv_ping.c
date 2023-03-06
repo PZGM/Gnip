@@ -1,7 +1,7 @@
 #include "ft_ping.h"
 
 void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
-	char recv_buf[MAX_PACKET_SIZE];
+	char recv_buf[PACKET_SIZE];
 
 	struct iovec iov = {
 		.iov_base = recv_buf,
@@ -23,11 +23,12 @@ void recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval 
 		}
 	} else {
 		struct timeval end_time;
+		struct iphdr	*ip = (struct iphdr *)recv_buf;
 		if (gettimeofday(&end_time, NULL) < 0) {
 			write(2, "Error: Failed to get time of day\n", 34);
 			exit(1);
 		}
 		double ping = (end_time.tv_sec - start_time->tv_sec) * 1000.0 + (end_time.tv_usec - start_time->tv_usec) / 1000.0;
-		printf("%zu bytes from %s (%s): icmp_seq=%d ttl=%d time=%.3f ms\n", iov.iov_len, host, ip_str, seq, 69, ping);
+		printf("%zu bytes from %s (%s): icmp_seq=%d ttl=%d time=%.3f ms\n", iov.iov_len, host, ip_str, seq, ip->ttl, ping);
 	}
 }
