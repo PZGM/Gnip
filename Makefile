@@ -12,32 +12,41 @@ endif
 
 NAME = ft_ping
 
-SRCS =	./srcs/ft_ping.c		\
-		./srcs/send_ping.c		\
-		./srcs/recv_ping.c		\
-		./srcs/get_addr.c		\
-		./srcs/socket_fd.c		\
-		./srcs/checksum.c		\
-		./srcs/print_stats.c	\
-		./srcs/update_stats.c	\
-		./srcs/free_chain.c
+SRCS_DIR = ./srcs/
+
+SRCS_FILES =	ft_ping.c		\
+				send_ping.c		\
+				recv_ping.c		\
+				get_addr.c		\
+				socket_fd.c		\
+				checksum.c		\
+				print_stats.c	\
+				fill_headers.c	\
+				./srcs/update_stats.c	\
+				./srcs/free_chain.c
+
+SRCS = $(addprefix ${SRCS_DIR}, ${SRCS_FILES})
 
 		
 OBJS = ${SRCS:.c=.o}
+DEP = ${OBJS:%.o=%.d}
 
 CC  = clang
 
-CFLAGS = -Wall -Wextra  -I includes/
+CFLAGS = -Wall -Wextra -Werror -I includes/
 
 SANI = -fsanitize=address -O0 -g3
 
-$(NAME): ${OBJS} Makefile
-	@echo "\r\r${YELLOW}Compilation...${RESET}"
-	@${CC} -o ${NAME} ${CFLAGS} ${SRCS} 
-	@echo "${GREEN}Compilation OK${RESET}"
-	@${RM}	${OBJS}
+all: ${NAME}
+-include $(DEP)
+%.o: %.c
+	@printf "\e[2K\r- $@ ${YELLOW} in progress...${RESET}"
+	@${CC} ${CFLAGS} -o $@ -c $<
+	@printf "\e[2K\r- $@ ${GREEN} finished${RESET}\n"
 
-all:  ${NAME}
+$(NAME): ${OBJS}
+	@${CC} -o ${NAME} ${CFLAGS} ${OBJS} 
+	@echo "${GREEN}Compilation OK${RESET}"
 
 clean:
 	@echo "${RED}deleting objects${RESET}"
