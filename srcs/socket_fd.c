@@ -7,7 +7,7 @@ int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr) {
 	
 	sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (sockfd < 0)	{
-		write(2, "Error: Socket creation failed. Try to sudo\n", 44);
+		write(2, "Error: Socket creation failed\n", 30);
 		exit(1); 
 	}
 	if (setsockopt(sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {	

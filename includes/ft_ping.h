@@ -22,7 +22,7 @@
 # define ICMP_HEADER_SIZE       8
 # define TTL                    64
 # define IP_HEADER_SIZE			20
-# define ICMP_PAYLOAD_SIZE		36
+# define ICMP_PAYLOAD_SIZE		56
 # define PACKET_SIZE	        (IP_HEADER_SIZE + ICMP_HEADER_SIZE + ICMP_PAYLOAD_SIZE)
 
 unsigned short checksum(void *b, int len);

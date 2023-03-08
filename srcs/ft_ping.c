@@ -1,10 +1,17 @@
 #include "ft_ping.h"
 
-static volatile bool loop = true;
+t_stats stats;
+
+char *host;
+struct addrinfo *res;
+char * ip_str;
 
 void intHandler(int dummy) {
 	(void)dummy;
-    loop = false;
+	print_stats(host, stats);
+	free(res);
+	free(ip_str);
+	exit(0);
 }
 
 int main(int argc, char **argv) {
@@ -16,7 +23,6 @@ int main(int argc, char **argv) {
 	
 	int x = 0;
 	int host_pos = -1;
-	char *host;
 	while (++x < argc)
 	{
 		if (argv[x][0] != '-' || !argv[x][1])
@@ -26,29 +32,26 @@ int main(int argc, char **argv) {
 		}
 	}
 	signal(SIGINT, intHandler);
-	struct addrinfo *res;
 	struct sockaddr_in dest_addr;
 	struct timeval start_time;
 
-	char * ip_str = get_addr(host, &res);
+	ip_str = get_addr(host, &res);
 	memset(&dest_addr, 0, sizeof(dest_addr));
 
 	int sockfd = socketfd(res, &dest_addr);
 
 	int seq = 0;
 	gettimeofday(&start_time, NULL);
-	t_stats stats = {
-		.received = 0,
-		.sent = 0,
-		.start_time = start_time,
-		.rtt = NULL,
-		.total_time_ms = 0
-	};
+	stats.received = 0;
+	stats.sent = 0;
+	stats.start_time = start_time;
+	stats.rtt = NULL;
+	stats.total_time_ms = 0;
 
 	parse(argc, argv, host_pos);
-	printf("PING %s(%s) 56(84) data bytes\n", host, ip_str);
+	printf("PING %s(%s) %i(%i) data bytes\n", host, ip_str, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
 
-	while (loop) {
+	while (42) {
 		seq++;
 
 		stats.sent += send_ping(sockfd, &dest_addr,seq, &start_time);
@@ -56,11 +59,6 @@ int main(int argc, char **argv) {
 		update_stats(&stats, ping);
 		sleep(1);
 	}
-
-	print_stats(host, stats);
-
-	free(res);
-	free(ip_str);
 	
 	return 0;
 }
