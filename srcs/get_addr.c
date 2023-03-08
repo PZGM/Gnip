@@ -10,7 +10,7 @@ char *get_addr( const char *host, struct addrinfo** res_ptr) {
 
 	int ret = getaddrinfo(host, NULL, &hints, res_ptr);
 	if (ret < 0){
-		write(2, "Error: Failed to ge hostname\n", 30);
+		write(2, "Error: Failed to get hostname\n", 30);
 		exit(1); 
 	}
 
@@ -26,7 +26,6 @@ char *get_addr( const char *host, struct addrinfo** res_ptr) {
         write(2, "Failed to convert IP address to string\n", 40);
         exit(1);
     }
-    printf("PING %s(%s) 56 data bytes\n", host, ip);
     char *ip_str = malloc(sizeof(char) * (INET_ADDRSTRLEN + 1));
     strcpy(ip_str, ip);
 

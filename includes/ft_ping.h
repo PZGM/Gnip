@@ -33,6 +33,7 @@ int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
 void print_stats(char * host, t_stats stats);
 void update_stats(t_stats *stats, double rtt);
 void free_chain(t_node * node);
+void parse(int argc, char **argv, int host_pos);
 
 void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
 void	fill_icmp_header(struct icmphdr* icmp, int seq);

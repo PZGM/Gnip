@@ -26,8 +26,8 @@ void print_stats(char * host, t_stats stats) {
     }
     mdev = ft_sqrt(mdev / stats.received);
 
-    printf("--- %s ping statistics ---\n", host);
+    printf("\n--- %s ping statistics ---\n", host);
     printf("%d packets transmitted, %d received, %d %% packet loss, time %d ms\n", stats.sent, stats.received, lost_percentage, duration);
-    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms", min, max, mean, mdev);
+    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", min, max, mean, mdev);
     free_chain(stats.rtt);
 }

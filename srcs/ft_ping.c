@@ -9,16 +9,27 @@ void intHandler(int dummy) {
 
 int main(int argc, char **argv) {
   
-  if (argc < 2) {
+  	if (argc < 2)
+	{
         exit(1);
     }
-
+	
+	int x = 0;
+	int host_pos = -1;
+	char *host;
+	while (++x < argc)
+	{
+		if (argv[x][0] != '-' || !argv[x][1])
+		{
+			host = argv[x];
+			host_pos = x;
+		}
+	}
 	signal(SIGINT, intHandler);
 	struct addrinfo *res;
 	struct sockaddr_in dest_addr;
 	struct timeval start_time;
 
-	char * host = argv[1];
 	char * ip_str = get_addr(host, &res);
 	memset(&dest_addr, 0, sizeof(dest_addr));
 
@@ -33,6 +44,9 @@ int main(int argc, char **argv) {
 		.rtt = NULL,
 		.total_time_ms = 0
 	};
+
+	parse(argc, argv, host_pos);
+	printf("PING %s(%s) 56(84) data bytes\n", host, ip_str);
 
 	while (loop) {
 		seq++;
