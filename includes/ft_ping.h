@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include "chain.h"
 #include "stats.h"
+#include "maths.h"
 
 # define ICMP_HEADER_SIZE       8
 # define TTL                    64
@@ -26,7 +27,7 @@
 
 unsigned short checksum(void *b, int len);
 int send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time);
-int recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char *host, char *ip_str);
+double recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char *host, char *ip_str);
 char *get_addr( const char *host, struct addrinfo** res);
 int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
 void print_stats(char * host, t_stats stats);

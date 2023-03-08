@@ -5,10 +5,11 @@
 
 typedef struct		s_stats
 {
-	int				sent;
-	int				received;
+	int							sent;
+	int							received;
 	struct timeval	start_time;
-	t_node 			*rtt;
+	t_node 					*rtt;
+	double					total_time_ms;
 } 					t_stats;
 
 #endif

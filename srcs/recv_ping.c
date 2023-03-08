@@ -1,6 +1,6 @@
 #include "ft_ping.h"
 
-int recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
+double recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char * host, char * ip_str) {
 	char recv_buf[PACKET_SIZE];
 
 	struct iovec iov = {

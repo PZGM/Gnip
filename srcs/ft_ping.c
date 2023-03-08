@@ -30,14 +30,15 @@ int main(int argc, char **argv) {
 		.received = 0,
 		.sent = 0,
 		.start_time = start_time,
-		.rtt = NULL
+		.rtt = NULL,
+		.total_time_ms = 0
 	};
 
 	while (loop) {
 		seq++;
 
 		stats.sent += send_ping(sockfd, &dest_addr,seq, &start_time);
-		int ping = recv_ping(sockfd, &dest_addr, seq, &start_time, host, ip_str);
+		double ping = recv_ping(sockfd, &dest_addr, seq, &start_time, host, ip_str);
 		update_stats(&stats, ping);
 		sleep(1);
 	}

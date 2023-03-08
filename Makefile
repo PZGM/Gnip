@@ -23,7 +23,8 @@ SRCS_FILES =	ft_ping.c		\
 				print_stats.c	\
 				fill_headers.c	\
 				update_stats.c	\
-				free_chain.c		\
+				free_chain.c	\
+				maths.c
 
 SRCS = $(addprefix ${SRCS_DIR}, ${SRCS_FILES})
 
