@@ -38,4 +38,12 @@ void parse(int argc, char **argv, int host_pos);
 void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
 void	fill_icmp_header(struct icmphdr* icmp, int seq);
 
+typedef struct      s_ggnip
+{
+    t_stats         stats;
+    char            *host;
+    struct addrinfo *res;
+    char            *ip_str;
+}                   t_ggnip;
+
 #endif

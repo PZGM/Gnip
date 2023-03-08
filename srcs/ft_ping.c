@@ -1,16 +1,12 @@
 #include "ft_ping.h"
 
-t_stats stats;
-
-char *host;
-struct addrinfo *res;
-char * ip_str;
+t_ggnip ggnip;
 
 void intHandler(int dummy) {
 	(void)dummy;
-	print_stats(host, stats);
-	free(res);
-	free(ip_str);
+	print_stats(ggnip.host, ggnip.stats);
+	free(ggnip.res);
+	free(ggnip.ip_str);
 	exit(0);
 }
 
@@ -27,7 +23,7 @@ int main(int argc, char **argv) {
 	{
 		if (argv[x][0] != '-' || !argv[x][1])
 		{
-			host = argv[x];
+			ggnip.host = argv[x];
 			host_pos = x;
 		}
 	}
@@ -35,28 +31,28 @@ int main(int argc, char **argv) {
 	struct sockaddr_in dest_addr;
 	struct timeval start_time;
 
-	ip_str = get_addr(host, &res);
+	ggnip.ip_str = get_addr(ggnip.host, &(ggnip.res));
 	memset(&dest_addr, 0, sizeof(dest_addr));
 
-	int sockfd = socketfd(res, &dest_addr);
+	int sockfd = socketfd(ggnip.res, &dest_addr);
 
 	int seq = 0;
 	gettimeofday(&start_time, NULL);
-	stats.received = 0;
-	stats.sent = 0;
-	stats.start_time = start_time;
-	stats.rtt = NULL;
-	stats.total_time_ms = 0;
+	ggnip.stats.received = 0;
+	ggnip.stats.sent = 0;
+	ggnip.stats.start_time = start_time;
+	ggnip.stats.rtt = NULL;
+	ggnip.stats.total_time_ms = 0;
 
 	parse(argc, argv, host_pos);
-	printf("PING %s(%s) %i(%i) data bytes\n", host, ip_str, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
+	printf("PING %s(%s) %i(%i) data bytes\n", ggnip.host, ggnip.ip_str, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
 
 	while (42) {
 		seq++;
 
-		stats.sent += send_ping(sockfd, &dest_addr,seq, &start_time);
-		double ping = recv_ping(sockfd, &dest_addr, seq, &start_time, host, ip_str);
-		update_stats(&stats, ping);
+		ggnip.stats.sent += send_ping(sockfd, &dest_addr,seq, &start_time);
+		double ping = recv_ping(sockfd, &dest_addr, seq, &start_time, ggnip.host, ggnip.ip_str);
+		update_stats(&(ggnip.stats), ping);
 		sleep(1);
 	}
 	
