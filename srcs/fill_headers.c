@@ -5,9 +5,9 @@ void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest)
 	ip->version = 4;
 	ip->ihl = IP_HEADER_SIZE / 4;
 	ip->tos = 0;
-	ip->tot_len = htons(PACKET_SIZE);
-	ip->id = htons(0);
-	ip->frag_off = htons(0);
+	ip->tot_len = PACKET_SIZE;
+	ip->id = 0;
+	ip->frag_off = 0;
 	ip->ttl = TTL;
 	ip->protocol = IPPROTO_ICMP;
 	ip->check = 0;

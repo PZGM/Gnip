@@ -31,39 +31,35 @@ SRCS = $(addprefix ${SRCS_DIR}, ${SRCS_FILES})
 
 		
 OBJS = ${SRCS:.c=.o}
-DEP = ${OBJS:%.o=%.d}
+DEP = $(OBJS:%.o=%.d)
 
 CC  = clang
 
-CFLAGS = -Wall -Wextra -Werror -I includes/
+CFLAGS = -Wall -Wextra -Werror -I ${HEADERS}
+
+HEADERS =  ./includes/
 
 SANI = -fsanitize=address -O0 -g3
 
-all: ${NAME}
 -include $(DEP)
-%.o: %.c
-	@printf "\e[2K\r- $@ ${YELLOW} in progress...${RESET}"
-	@${CC} ${CFLAGS} -o $@ -c $<
-	@printf "\e[2K\r- $@ ${GREEN} finished${RESET}\n"
+%.o: %.c Makefile
+	${CC} ${CFLAGS} -MD -MP -o $@ -c $<
+
+all: ${NAME}
 
 $(NAME): ${OBJS}
-	@${CC} -o ${NAME} ${CFLAGS} ${OBJS} 
-	@echo "${GREEN}Compilation OK${RESET}"
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 clean:
-	@echo "${RED}deleting objects${RESET}"
-	@${RM} ${OBJS}
+	${RM} ${OBJS}
 
 fclean:  clean
-	@echo "${RED}deleting executable${RESET}"
-	@${RM} ${NAME}
+	${RM} ${NAME}
 
 re: fclean all clean
 
 san: fclean
-	@${RM} ${NAME}
-	@${CC} -o ${NAME} ${CFLAGS} ${SANI} ${SRCS} 
-	@${RM}	${OBJS}
-	@echo "${YELLOW}Execution${RESET}"
+	${RM} ${NAME}
+	${CC} -o ${NAME} ${CFLAGS} ${SANI} ${SRCS} 
 
-.PHONY:    all clean fclean re san exec
+.PHONY: all clean fclean re san exec
