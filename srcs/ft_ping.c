@@ -10,10 +10,18 @@ void intHandler(int dummy) {
 	exit(0);
 }
 
+void alarmHandler(int dummy) {
+	(void)dummy;
+	alarm(1);
+	ggnip.stats.sent += send_ping(ggnip.sockfd, (ggnip.dest_addr),ggnip.seq);
+	ggnip.seq++;
+}
+
 int main(int argc, char **argv) {
   
   	if (argc < 2)
 	{
+		write(2, "ft_ping: usage error: Destination address required\n", 51);
         exit(1);
     }
 	
@@ -31,12 +39,15 @@ int main(int argc, char **argv) {
 	struct sockaddr_in dest_addr;
 	struct timeval start_time;
 
-	ggnip.ip_str = get_addr(ggnip.host, &(ggnip.res));
+	parse(argc, argv, host_pos);
+
+	ggnip.ip_str = get_addr(ggnip.host, &(ggnip.res), host_pos);
 	memset(&dest_addr, 0, sizeof(dest_addr));
 
-	int sockfd = socketfd(ggnip.res, &dest_addr);
+	int sockfd = 0;
+	if (host_pos >= 0)
+		sockfd = socketfd(ggnip.res, &dest_addr);
 
-	int seq = 0;
 	gettimeofday(&start_time, NULL);
 	ggnip.stats.received = 0;
 	ggnip.stats.sent = 0;
@@ -44,16 +55,19 @@ int main(int argc, char **argv) {
 	ggnip.stats.rtt = NULL;
 	ggnip.stats.total_time_ms = 0;
 
-	parse(argc, argv, host_pos);
 	printf("PING %s(%s) %i(%i) data bytes\n", ggnip.host, ggnip.ip_str, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
 
-	while (42) {
-		seq++;
+	signal(SIGALRM, alarmHandler);
+	alarm(1);
+	ggnip.dest_addr = &dest_addr;
+	ggnip.sockfd = sockfd;
+	ggnip.seq = 0;
 
-		ggnip.stats.sent += send_ping(sockfd, &dest_addr,seq, &start_time);
-		double ping = recv_ping(sockfd, &dest_addr, seq, &start_time, ggnip.host, ggnip.ip_str);
-		update_stats(&(ggnip.stats), ping);
-		sleep(1);
+	while (42) {
+		double ping = recv_ping(sockfd, &dest_addr, ggnip.host, ggnip.ip_str);
+		
+		if (ping > 0)
+			update_stats(&(ggnip.stats), ping);
 	}
 	
 	return 0;

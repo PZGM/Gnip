@@ -21,7 +21,7 @@ void parse(int argc, char **argv, int host_pos) {
             if (opt[y] != 'v')
             {
                 if (opt[y] != 'h') {
-                    printf("invalide option -- %c\n\n",opt[y]);
+                    printf("ft_ping: invalide option -- '%c'\n",opt[y]);
                 }
                 print_help();
                 exit(0);

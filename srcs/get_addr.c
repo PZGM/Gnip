@@ -1,6 +1,6 @@
 #include "ft_ping.h"
 
-char *get_addr( const char *host, struct addrinfo** res_ptr) {
+char *get_addr( const char *host, struct addrinfo** res_ptr, int host_pos) {
 	struct addrinfo hints;
 
     memset(&hints, 0, sizeof(hints));
@@ -8,10 +8,25 @@ char *get_addr( const char *host, struct addrinfo** res_ptr) {
     hints.ai_socktype = SOCK_RAW; // Raw socket for ICMP packets
     hints.ai_protocol = IPPROTO_ICMP; // ICMP protocol
 
+    if (host_pos < 0) {
+        return NULL;
+    }
 	int ret = getaddrinfo(host, NULL, &hints, res_ptr);
 	if (ret < 0){
-		write(2, "Error: Failed to get hostname\n", 30);
-		exit(1); 
+        write(2, "ft_ping: ", 9);
+        write(2, host, ft_strlen(host));
+        write(2, ": ", 2);
+        if (ret == -2 )
+            write(2, "Name or service not known\n", 27);
+        else if (ret == -3)
+            write(2, "Temporary failure in name resolution\n", 38);
+        else if (ret == -5)
+            write(2, "No address associated with hostname\n", 36);
+        else {
+            write(2, host, ft_strlen(host));
+            write(2, ": ", 2);
+        }
+		exit(1);
 	}
 
     if (ret != 0) {

@@ -22,6 +22,13 @@ void	fill_icmp_header(struct icmphdr* icmp, int seq)
 	icmp->checksum = 0;
 	icmp->un.echo.id = getpid() & 0xFFFF;
 	icmp->un.echo.sequence = seq;
-	memset((char *)icmp + ICMP_HEADER_SIZE, 0xff, ICMP_PAYLOAD_SIZE);
 	icmp->checksum = checksum((unsigned short*)icmp, PACKET_SIZE);
+}
+
+void	fill_timestamp(void * buf) {
+	gettimeofday(buf, NULL);
+}
+
+void	fill_buff(char * buf) {
+	memset(buf, 0xff, ICMP_PAYLOAD_SIZE);
 }
