@@ -1,3 +1,3 @@
 # Gnip
 
-A basic implementation of the Ping function 
+A basic implementation of the Ping function
