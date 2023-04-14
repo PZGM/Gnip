@@ -27,7 +27,6 @@
 # define ALIGN_RECEIVED_TIMESTAMP   24
 # define PACKET_SIZE	            (IP_HEADER_SIZE + ICMP_HEADER_SIZE + ICMP_PAYLOAD_SIZE)
 
-<<<<<<< HEAD
 unsigned short  checksum(void *b, int len);
 int             send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq);
 double          recv_ping(int sockfd,struct sockaddr_in* src_addr, char *host, char *ip_str);
@@ -38,24 +37,6 @@ void            update_stats(t_stats *stats, double rtt);
 void            free_chain(t_node * node);
 void            parse(int argc, char **argv, int host_pos);
 int             ft_strlen(const char *s);
-=======
-
-# define ICMP_HEADER_SIZE       8
-# define TTL                    64
-# define IP_HEADER_SIZE			20
-# define ICMP_PAYLOAD_SIZE		56
-# define PACKET_SIZE	        (IP_HEADER_SIZE + ICMP_HEADER_SIZE + ICMP_PAYLOAD_SIZE)
-
-unsigned short checksum(void *b, int len);
-int send_ping(int sockfd, struct sockaddr_in* dest_addr, int seq, struct timeval *start_time);
-double recv_ping(int sockfd,struct sockaddr_in* src_addr, int seq, struct timeval *start_time, char *host, char *ip_str);
-char *get_addr( const char *host, struct addrinfo** res);
-int socketfd(struct addrinfo *res, struct sockaddr_in *dest_addr);
-void print_stats(char * host, t_stats stats);
-void update_stats(t_stats *stats, double rtt);
-void free_chain(t_node * node);
-void parse(int argc, char **argv, int host_pos);
->>>>>>> 8feca5daafdcdf26c422d93f85a52218da0f7eae
 
 void	fill_ip_header(struct iphdr *ip, struct sockaddr_in* dest);
 void	fill_icmp_header(struct icmphdr* icmp, int seq);
